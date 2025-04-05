@@ -1,7 +1,11 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const { v4: uuidv4 } = require('uuid');
+import path from 'path';
+import dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
+
+dotenv.config();
+const _dirname = path.resolve();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -11,7 +15,7 @@ const quizzes = new Map();
 
 // Configure CORS for both development and production
 const corsOptions = {
-  origin: process.env.VITE_API_URL || 'http://localhost:3000',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   methods: ['GET', 'POST'],
   credentials: true
 };
@@ -70,6 +74,10 @@ app.post('/api/quizzes/:id/submit', (req, res) => {
   res.json(result);
 });
 
+app.use(express.static(path.join(_dirname, '/frontend/dist')));
+app.get('*', (_, res) => {
+  res.sendFile(path.resolve(_dirname, 'frontend', 'dist', 'index.html'));
+});
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
