@@ -11,7 +11,7 @@ const quizzes = new Map();
 
 // Configure CORS for both development and production
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: process.env.VITE_API_URL || 'http://localhost:3000',
   methods: ['GET', 'POST'],
   credentials: true
 };
